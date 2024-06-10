@@ -7,6 +7,10 @@ an azure cosmos database.
 [Cocona](https://github.com/mayuki/Cocona) is a Micro-framework for .NET Core console application. 
 Cocona makes it easy and fast to build console applications on .NET.🚀
 
+## Credentials 🔒
+The credentials to the azure cosmos databse are stored in a App.Config file. Because of security reasons
+this file is not included in vcs, therefore once you have an azure account you can set all relevant variables as shown in class CosmosCommandBase
+
 ## CRUD
 Below are the list of operations that currently can be done with this app.
 
