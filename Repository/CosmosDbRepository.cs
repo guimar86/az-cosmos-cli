@@ -8,12 +8,11 @@ namespace cosmodb.Repository;
 
 public class CosmosDbRepository<T> : ICosmosDbRepository<T> where T : CosmosDocumentBase
 {
-    private Container _container;
+    private readonly Container _container;
 
     public CosmosDbRepository()
     {
-        var commandBase = Commands.CosmosCommandBase.GetInstanceAsync().Result;
-        _container = commandBase.Container;
+        _container = CosmosCommandBase.GetInstanceAsync().Result.Container;
     }
 
     public async Task<T> GetItemAsync(string id)

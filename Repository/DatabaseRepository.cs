@@ -6,13 +6,13 @@ namespace cosmodb.Repository;
 
 public class DatabaseRepository : IDatabaseRepository
 {
-    private static readonly string EndpointUrl = ConfigurationManager.AppSettings["EndPointUri"];
-    private static readonly string PrimaryKey = ConfigurationManager.AppSettings["PrimaryKey"];
-    private CosmosClient _cosmosClient;
+    private readonly CosmosClient _cosmosClient;
+    private readonly CosmosCommandBase _cosmosCommandBase;
 
     public DatabaseRepository()
     {
-        _cosmosClient = new CosmosClient(EndpointUrl, PrimaryKey);
+        _cosmosCommandBase = CosmosCommandBase.GetInstanceAsync().Result;
+        _cosmosClient = _cosmosCommandBase.CosmosClient;
     }
 
     public async Task<Database> CreateDatabase(string databaseId)
@@ -42,7 +42,6 @@ public class DatabaseRepository : IDatabaseRepository
 
     public async Task CleanAll()
     {
-        var commandBase = await CosmosCommandBase.GetInstanceAsync();
-        await commandBase.ResetDatabaseAndContainerAsync();
+        await _cosmosCommandBase.ResetDatabaseAndContainerAsync();
     }
 }

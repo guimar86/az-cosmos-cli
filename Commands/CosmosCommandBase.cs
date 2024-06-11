@@ -15,7 +15,7 @@ namespace cosmodb.Commands
         private static readonly string PrimaryKey = ConfigurationManager.AppSettings["PrimaryKey"];
         private static readonly string DatabaseId = ConfigurationManager.AppSettings["DatabaseId"];
         private static readonly string ContainerId = ConfigurationManager.AppSettings["ContainerId"];
-        private CosmosClient _cosmosClient;
+        public CosmosClient CosmosClient { get; set; }
 
         private CosmosCommandBase()
         {
@@ -28,6 +28,7 @@ namespace cosmodb.Commands
                 _instance = new CosmosCommandBase();
                 await _instance.InitCosmos();
             }
+
             return _instance;
         }
 
@@ -51,10 +52,10 @@ namespace cosmodb.Commands
 
         private async Task InitCosmos()
         {
-            _cosmosClient = new CosmosClient(EndpointUrl, PrimaryKey);
+            CosmosClient = new CosmosClient(EndpointUrl, PrimaryKey);
 
             // Create a database if it doesn't exist
-            Database = await _cosmosClient.CreateDatabaseIfNotExistsAsync(DatabaseId);
+            Database = await CosmosClient.CreateDatabaseIfNotExistsAsync(DatabaseId);
 
             var subPartitionKeys = new List<string>()
             {
